@@ -25,7 +25,7 @@ $("#btn-convert-bin").click(function (e) {
 $("#btn-convert-hex").click(function (e) { 
     e.preventDefault();
     var value = $("#input-hex").val();
-    if(isHexadecimalValid(value)){
+    if(isHexadecimalValid(value,false)){
         $("#input-bin").val(hex2bin(value));
         $("#input-dec").val(hex2dec(value));
     
@@ -55,8 +55,9 @@ function isBinaryValid(value){
     return value.match("^[0-1]+$") != null;
 }
 
-function isHexadecimalValid(value){
-    return value.match("^([a-f,A-F,0-9]{2})+$") !=null;
+function isHexadecimalValid(value,multipleOf2){
+    var regex = multipleOf2?"^([a-f,A-F,0-9]{2})+$":"^[a-f,A-F,0-9]+$"
+    return value.match(regex) !=null;
 }
 
 function isDecimalValid(value){
@@ -79,7 +80,7 @@ function bin2Dec(value){
 function hex2bin(value){
     var result = "";
     for(var i=0;i<value.length;i+=2){
-        result = result + parseInt(value.substr(i,8),16).toString(2).toUpperCase();
+        result = result + parseInt(value.substr(i,2),16).toString(2).toUpperCase();
     }
     return result;
 }
